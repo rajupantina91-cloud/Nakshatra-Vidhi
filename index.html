@@ -14,6 +14,9 @@
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://img.shields.io/badge/Astrology-Vedic-orange">
     
+    <!-- Google Fonts - Roboto Family -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
@@ -23,7 +26,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: #333;
@@ -42,14 +45,17 @@
         }
 
         .header h1 {
+            font-family: 'Roboto Condensed', sans-serif;
             font-size: 3.5em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 700;
         }
 
         .header p {
             font-size: 1.2em;
             opacity: 0.9;
+            font-weight: 300;
         }
 
         .form-container {
@@ -81,6 +87,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            font-weight: 500;
         }
 
         .form-group {
@@ -90,7 +97,7 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
+            font-weight: 500;
             color: #555;
         }
 
@@ -101,6 +108,7 @@
             border: 2px solid #e1e5e9;
             border-radius: 10px;
             font-size: 16px;
+            font-family: 'Roboto', sans-serif;
             transition: border-color 0.3s ease;
         }
 
@@ -111,8 +119,40 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
+        .form-group input.error,
+        .form-group select.error {
+            border-color: #e74c3c;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
         .required {
             color: #e74c3c;
+        }
+
+        .error-message {
+            background: #fee;
+            border: 1px solid #e74c3c;
+            color: #c0392b;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .error-message h4 {
+            margin-bottom: 10px;
+            color: #c0392b;
+        }
+
+        .error-message ul {
+            margin-left: 20px;
         }
 
         .generate-btn {
@@ -126,7 +166,8 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: block;
             margin: 30px auto;
-            font-weight: 600;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
         }
 
         .generate-btn:hover {
@@ -171,6 +212,47 @@
             display: none;
         }
 
+        .input-summary {
+            background: #f0f4ff;
+            border: 1px solid #667eea;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .input-summary h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .summary-value {
+            color: #333;
+            font-weight: 400;
+        }
+
         .charts-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -190,6 +272,7 @@
             color: #667eea;
             margin-bottom: 15px;
             font-size: 1.2em;
+            font-weight: 500;
         }
 
         .chart-grid {
@@ -205,7 +288,7 @@
             background: white;
             padding: 12px 5px;
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 500;
             min-height: 55px;
             display: flex;
             flex-direction: column;
@@ -227,6 +310,7 @@
             border-radius: 3px;
             font-size: 7px;
             margin: 1px;
+            font-weight: 400;
         }
 
         .chart-info {
@@ -244,14 +328,30 @@
         .prediction-section {
             background: #f8f9fa;
             margin: 15px 0;
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
             border-left: 4px solid #667eea;
         }
 
         .prediction-section h4 {
             color: #667eea;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .prediction-subsection {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid #95a5a6;
+        }
+
+        .prediction-subsection h5 {
+            color: #2c3e50;
             margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 1.1em;
         }
 
         .download-btn {
@@ -264,6 +364,8 @@
             cursor: pointer;
             margin: 20px 10px;
             transition: background 0.3s ease;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
         }
 
         .download-btn:hover {
@@ -275,6 +377,21 @@
             color: #666;
             margin-top: 10px;
             font-style: italic;
+            font-weight: 300;
+        }
+
+        .ayanamsa-info {
+            background: #e8f4fd;
+            border: 1px solid #3498db;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .ayanamsa-info h5 {
+            color: #2980b9;
+            margin-bottom: 8px;
+            font-weight: 500;
         }
 
         @media (max-width: 768px) {
@@ -302,6 +419,10 @@
             .chart-grid {
                 max-width: 250px;
             }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -313,6 +434,11 @@
         </div>
 
         <div class="form-container">
+            <div class="error-message" id="errorMessage">
+                <h4>⚠️ Please complete all required fields:</h4>
+                <ul id="errorList"></ul>
+            </div>
+
             <form id="horoscopeForm">
                 <div class="form-grid">
                     <!-- Basic Birth Information -->
@@ -459,6 +585,11 @@
 
         <div class="results" id="results">
             <h2>🌟 Your Complete Nakshatra Vidhi Report 🌟</h2>
+            
+            <!-- Input Summary Section -->
+            <div class="input-summary" id="inputSummary">
+                <!-- Will be populated by JavaScript -->
+            </div>
 
             <div class="chart-info">
                 <h3>Basic Astrological Information</h3>
@@ -633,13 +764,67 @@
             });
         }
 
+        function validateForm(data) {
+            const requiredFields = [
+                { id: 'fullName', label: 'Full Name' },
+                { id: 'gender', label: 'Gender' },
+                { id: 'birthDate', label: 'Date of Birth' },
+                { id: 'birthTime', label: 'Time of Birth' },
+                { id: 'birthPlace', label: 'Birth Place' },
+                { id: 'latitude', label: 'Latitude' },
+                { id: 'longitude', label: 'Longitude' },
+                { id: 'timezone', label: 'Timezone' },
+                { id: 'chartStyle', label: 'Chart Style' }
+            ];
+
+            // Add language to required fields if chart style is selected
+            const chartStyle = document.getElementById('chartStyle').value;
+            if (chartStyle) {
+                requiredFields.push({ id: 'language', label: 'Language' });
+            }
+
+            const missingFields = [];
+            const errorElements = [];
+
+            // Clear previous errors
+            document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+            document.getElementById('errorMessage').style.display = 'none';
+
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field.id);
+                const value = data[field.id];
+                
+                if (!value || value.trim() === '') {
+                    missingFields.push(field.label);
+                    errorElements.push(element);
+                    element.classList.add('error');
+                }
+            });
+
+            if (missingFields.length > 0) {
+                // Show error message
+                const errorMessage = document.getElementById('errorMessage');
+                const errorList = document.getElementById('errorList');
+                
+                errorList.innerHTML = missingFields.map(field => `<li>${field}</li>`).join('');
+                errorMessage.style.display = 'block';
+
+                // Scroll to first error field
+                errorElements[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                errorElements[0].focus();
+
+                return false;
+            }
+
+            return true;
+        }
+
         async function generateHoroscope() {
             const formData = new FormData(document.getElementById('horoscopeForm'));
             const data = Object.fromEntries(formData.entries());
-
+            
             // Validate required fields
             if (!validateForm(data)) {
-                alert('Please fill in all required fields.');
                 return;
             }
 
@@ -653,12 +838,12 @@
                 try {
                     horoscopeData = calculateHoroscope(data);
                     displayHoroscope(horoscopeData);
-
+                    
                     // Hide loading and show results
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('results').style.display = 'block';
                     document.getElementById('generateBtn').disabled = false;
-
+                    
                     // Scroll to results
                     document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
                 } catch (error) {
@@ -670,9 +855,90 @@
             }, 4000);
         }
 
-        function validateForm(data) {
-            const required = ['fullName', 'gender', 'birthDate', 'birthTime', 'birthPlace', 'latitude', 'longitude', 'timezone', 'chartStyle', 'language'];
-            return required.every(field => data[field] && data[field].trim() !== '');
+        function calculateAyanamsa(birthDate, ayanamsaType) {
+            // Calculate Ayanamsa based on birth date and type
+            const year = birthDate.getFullYear();
+            const month = birthDate.getMonth() + 1;
+            const day = birthDate.getDate();
+            
+            // Base ayanamsa values (simplified calculation)
+            const baseValues = {
+                'lahiri': 23.85, // Lahiri Ayanamsa for 2025
+                'raman': 22.47,  // Raman Ayanamsa
+                'krishnamurti': 23.38, // KP Ayanamsa
+                'yukteshwar': 22.27    // Yukteshwar Ayanamsa
+            };
+            
+            // Approximate rate of change per year (50.26 arcseconds)
+            const yearlyRate = 50.26 / 3600; // Convert to degrees
+            const referencYear = 2025;
+            const yearDiff = year - referencYear;
+            
+            const baseValue = baseValues[ayanamsaType] || baseValues.lahiri;
+            const ayanamsa = baseValue + (yearDiff * yearlyRate);
+            
+            return {
+                value: Math.round(ayanamsa * 10000) / 10000, // Round to 4 decimal places
+                degrees: Math.floor(ayanamsa),
+                minutes: Math.floor((ayanamsa - Math.floor(ayanamsa)) * 60),
+                seconds: Math.round(((ayanamsa - Math.floor(ayanamsa)) * 60 - Math.floor((ayanamsa - Math.floor(ayanamsa)) * 60)) * 60)
+            };
+        }
+
+        function displayInputSummary(data, ayanamsaData) {
+            const summaryContainer = document.getElementById('inputSummary');
+            const birthDate = new Date(data.birthDate);
+            
+            summaryContainer.innerHTML = `
+                <h3>📋 Input Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <span class="summary-label">Name:</span>
+                        <span class="summary-value">${data.fullName}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Gender:</span>
+                        <span class="summary-value">${data.gender.charAt(0).toUpperCase() + data.gender.slice(1)}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Date of Birth:</span>
+                        <span class="summary-value">${birthDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Time of Birth:</span>
+                        <span class="summary-value">${data.birthTime}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Birth Place:</span>
+                        <span class="summary-value">${data.birthPlace}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Coordinates:</span>
+                        <span class="summary-value">${data.latitude}°N, ${data.longitude}°E</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Timezone:</span>
+                        <span class="summary-value">GMT ${data.timezone > 0 ? '+' : ''}${data.timezone}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Chart Style:</span>
+                        <span class="summary-value">${data.chartStyle.charAt(0).toUpperCase() + data.chartStyle.slice(1)} Indian</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Language:</span>
+                        <span class="summary-value">${languageOptions[data.chartStyle].find(lang => lang.value === data.language)?.text || data.language}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Calendar System:</span>
+                        <span class="summary-value">${data.calendarSystem.charAt(0).toUpperCase() + data.calendarSystem.slice(1)}</span>
+                    </div>
+                </div>
+                <div class="ayanamsa-info">
+                    <h5>🎯 Calculated Ayanamsa (${data.ayanamsa.charAt(0).toUpperCase() + data.ayanamsa.slice(1)}):</h5>
+                    <p><strong>${ayanamsaData.degrees}° ${ayanamsaData.minutes}' ${ayanamsaData.seconds}"</strong> (${ayanamsaData.value}°)</p>
+                    <p><em>Used for sidereal calculations and planetary position adjustments</em></p>
+                </div>
+            `;
         }
 
         function calculateHoroscope(data) {
@@ -682,6 +948,9 @@
             const longitude = parseFloat(data.longitude);
             const timezone = parseFloat(data.timezone);
 
+            // Calculate Ayanamsa
+            const ayanamsaData = calculateAyanamsa(birthDate, data.ayanamsa);
+
             // Adjust for timezone
             const utcTime = new Date(birthDate.getTime() - (timezone * 60 * 60 * 1000));
 
@@ -689,7 +958,7 @@
             const jd = getJulianDayNumber(utcTime);
 
             // Calculate planetary positions (simplified)
-            const planetaryPositions = calculatePlanetaryPositions(jd, latitude, longitude);
+            const planetaryPositions = calculatePlanetaryPositions(jd, latitude, longitude, ayanamsaData.value);
 
             // Calculate houses
             const houses = calculateHouses(jd, latitude, longitude);
@@ -710,6 +979,7 @@
 
             return {
                 personalInfo: data,
+                ayanamsaData: ayanamsaData,
                 birthDetails: {
                     date: birthDate,
                     jd: jd,
@@ -725,7 +995,7 @@
                 nakshatra: nakshatra,
                 pada: pada,
                 divisionalCharts: divisionalChartsData,
-                predictions: generatePredictions(planetaryPositions, houses, ascendant, moonSign, sunSign)
+                predictions: generateDetailedPredictions(planetaryPositions, houses, ascendant, moonSign, sunSign)
             };
         }
 
@@ -734,39 +1004,39 @@
             const a = Math.floor((14 - (date.getMonth() + 1)) / 12);
             const y = date.getFullYear() + 4800 - a;
             const m = (date.getMonth() + 1) + 12 * a - 3;
-
+            
             let jd = date.getDate() + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
-
+            
             // Add time component
             const timeOfDay = date.getHours() / 24 + date.getMinutes() / 1440 + date.getSeconds() / 86400;
             jd += timeOfDay;
-
+            
             return jd;
         }
 
-        function calculatePlanetaryPositions(jd, lat, lng) {
-            // Simplified planetary position calculation
+        function calculatePlanetaryPositions(jd, lat, lng, ayanamsa) {
+            // Simplified planetary position calculation with ayanamsa correction
             const T = (jd - 2451545.0) / 36525; // centuries since J2000.0
-
+            
             const positions = {};
-
+            
             // Sun (simplified)
             const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
-            positions.sun = (L0 % 360 + 360) % 360;
-
+            positions.sun = (L0 - ayanamsa + 360) % 360;
+            
             // Moon (simplified)
             const Lm = 218.3164477 + 481267.88123421 * T - 0.0015786 * T * T;
-            positions.moon = (Lm % 360 + 360) % 360;
-
-            // Other planets (simplified positions for demo)
-            positions.mars = (positions.sun + 45 + Math.random() * 60) % 360;
-            positions.mercury = (positions.sun + Math.random() * 30 - 15) % 360;
-            positions.jupiter = (positions.sun + Math.random() * 180) % 360;
-            positions.venus = (positions.sun + Math.random() * 40 - 20) % 360;
-            positions.saturn = (positions.sun + Math.random() * 120) % 360;
+            positions.moon = (Lm - ayanamsa + 360) % 360;
+            
+            // Other planets (simplified positions with ayanamsa correction)
+            positions.mars = (positions.sun + 45 + Math.random() * 60 - ayanamsa + 360) % 360;
+            positions.mercury = (positions.sun + Math.random() * 30 - 15 - ayanamsa + 360) % 360;
+            positions.jupiter = (positions.sun + Math.random() * 180 - ayanamsa + 360) % 360;
+            positions.venus = (positions.sun + Math.random() * 40 - 20 - ayanamsa + 360) % 360;
+            positions.saturn = (positions.sun + Math.random() * 120 - ayanamsa + 360) % 360;
             positions.rahu = (Math.random() * 360) % 360;
             positions.ketu = (positions.rahu + 180) % 360;
-
+            
             return positions;
         }
 
@@ -774,18 +1044,18 @@
             // Simplified house calculation
             const houses = {};
             const ascendantDegree = (Math.random() * 360) % 360;
-
+            
             for (let i = 1; i <= 12; i++) {
                 const houseDegree = (ascendantDegree + (i - 1) * 30) % 360;
                 houses[i] = Math.floor(houseDegree / 30) + 1;
             }
-
+            
             return houses;
         }
 
         function generateDivisionalCharts(planetaryPositions, includeDivisional) {
             const chartsToGenerate = [];
-
+            
             switch (includeDivisional) {
                 case 'basic':
                     chartsToGenerate.push('D1');
@@ -802,23 +1072,23 @@
             }
 
             const divisionalChartsData = {};
-
+            
             chartsToGenerate.forEach(chartType => {
                 divisionalChartsData[chartType] = calculateDivisionalChart(planetaryPositions, chartType);
             });
-
+            
             return divisionalChartsData;
         }
 
         function calculateDivisionalChart(planetaryPositions, chartType) {
             const divisionalPositions = {};
             const divisor = parseInt(chartType.substring(1));
-
+            
             Object.keys(planetaryPositions).forEach(planet => {
                 const originalDegree = planetaryPositions[planet];
                 const sign = Math.floor(originalDegree / 30) + 1;
                 const degreeInSign = originalDegree % 30;
-
+                
                 // Simplified divisional calculation
                 let divisionalDegree;
                 if (divisor === 1) {
@@ -827,19 +1097,19 @@
                     const portion = Math.floor(degreeInSign / (30 / divisor));
                     divisionalDegree = ((sign - 1) * divisor + portion) * (360 / (12 * divisor));
                 }
-
+                
                 divisionalPositions[planet] = divisionalDegree % 360;
             });
-
+            
             // Calculate houses for this divisional chart
             const divisionalHouses = {};
             const ascendantDegree = divisionalPositions.sun || 0; // Simplified
-
+            
             for (let i = 1; i <= 12; i++) {
                 const houseDegree = (ascendantDegree + (i - 1) * 30) % 360;
                 divisionalHouses[i] = Math.floor(houseDegree / 30) + 1;
             }
-
+            
             return {
                 positions: divisionalPositions,
                 houses: divisionalHouses,
@@ -847,7 +1117,345 @@
             };
         }
 
+        function generateDetailedPredictions(planets, houses, ascendant, moonSign, sunSign) {
+            const predictions = {};
+            
+            predictions.personality = generateDetailedPersonalityPrediction(ascendant, sunSign, moonSign, planets, houses);
+            predictions.career = generateDetailedCareerPrediction(planets, houses);
+            predictions.health = generateDetailedHealthPrediction(planets, houses);
+            predictions.relationships = generateDetailedRelationshipPrediction(planets, houses);
+            predictions.finance = generateDetailedFinancePrediction(planets, houses);
+            predictions.education = generateDetailedEducationPrediction(planets, houses);
+            predictions.family = generateDetailedFamilyPrediction(planets, houses);
+            predictions.spiritual = generateDetailedSpiritualPrediction(planets, houses);
+            
+            return predictions;
+        }
+
+        function generateDetailedPersonalityPrediction(ascendant, sunSign, moonSign, planets, houses) {
+            const ascendantTraits = {
+                1: "You are naturally confident, ambitious, and pioneering. You have strong leadership qualities and are not afraid to take initiatives.",
+                2: "You possess a steady, practical nature with a love for beauty and comfort. You are reliable and have a strong sense of values.",
+                3: "You are intellectually curious, communicative, and adaptable. You have a talent for learning and sharing information.",
+                4: "You are emotionally sensitive, nurturing, and intuitive. Family and home are very important to you.",
+                5: "You have a natural charisma, creativity, and leadership abilities. You enjoy being in the spotlight and inspiring others.",
+                6: "You are detail-oriented, analytical, and service-minded. You have a strong desire to help others and improve situations.",
+                7: "You are diplomatic, harmonious, and relationship-focused. You have a natural ability to balance different viewpoints.",
+                8: "You are intense, transformative, and mysterious. You have a deep understanding of life's hidden aspects.",
+                9: "You are philosophical, optimistic, and adventure-loving. You have a natural inclination towards higher learning and travel.",
+                10: "You are disciplined, ambitious, and responsible. You have a strong drive for success and recognition in your career.",
+                11: "You are innovative, humanitarian, and independent. You have a unique perspective and desire to benefit society.",
+                12: "You are compassionate, intuitive, and spiritually inclined. You have a deep connection to the collective unconscious."
+            };
+            
+            return {
+                title: "Personality & Character Analysis",
+                content: ascendantTraits[ascendant],
+                subsections: {
+                    planetaryPositions: {
+                        title: "Planetary Positions & Impact",
+                        content: `Sun in ${zodiacSigns[sunSign].name} (${zodiacSigns[sunSign].sanskrit}) influences your core identity with ${getSunTraits(sunSign)}. Moon in ${zodiacSigns[moonSign].name} (${zodiacSigns[moonSign].sanskrit}) affects your emotional nature with ${getMoonTraits(moonSign)}. The positioning of Mars, Mercury, Jupiter, Venus, and Saturn further refines your personality traits through their aspects and house placements.`
+                    },
+                    yogas: {
+                        title: "Yogas & Planetary Combinations",
+                        content: generateYogaAnalysis(planets, houses, ascendant)
+                    },
+                    doshas: {
+                        title: "Doshas & Astrological Afflictions",
+                        content: generateDoshaAnalysis(planets, houses, moonSign)
+                    },
+                    dashas: {
+                        title: "Predictions & Time Periods (Dashas)",
+                        content: generateDashaAnalysis(planets, houses)
+                    },
+                    remedies: {
+                        title: "Remediation & Recommendations",
+                        content: generatePersonalityRemedies(ascendant, sunSign, moonSign)
+                    }
+                }
+            };
+        }
+
+        function generateDetailedCareerPrediction(planets, houses) {
+            return {
+                title: "Career & Professional Life",
+                content: "Your professional path is influenced by the 10th house (career), its lord, and the planetary positions affecting your work life.",
+                subsections: {
+                    planetaryPositions: {
+                        title: "Planetary Positions & Impact",
+                        content: "The 10th house lord's position and aspects determine your career direction. Jupiter's placement indicates areas of growth and expansion, while Saturn shows where discipline and hard work will pay off. Mars provides energy and drive for professional pursuits."
+                    },
+                    yogas: {
+                        title: "Yogas & Planetary Combinations",
+                        content: "Raja Yoga formations in your chart indicate potential for leadership positions. Dhana Yoga suggests wealth through profession. Any Viparita Raja Yogas can bring success through overcoming challenges."
+                    },
+                    doshas: {
+                        title: "Doshas & Astrological Afflictions",
+                        content: "Planetary afflictions to the 10th house or its lord may cause career delays or instability. Saturn's adverse aspects might create obstacles that require patience and perseverance to overcome."
+                    },
+                    dashas: {
+                        title: "Predictions & Time Periods (Dashas)",
+                        content: "The Dasamsa (D10) chart shows significant career opportunities between ages 28-35. Major career changes are likely during the Mahadasha of the 10th lord or planets aspecting the 10th house. Professional recognition comes during favorable planetary periods."
+                    },
+                    remedies: {
+                        title: "Remediation & Recommendations",
+                        content: "Strengthen the 10th house lord through its gemstone and mantra. Worship Lord Vishnu for career stability. Donate to educational institutions on Thursdays. Wear blue or dark colors for important professional meetings."
+                    }
+                }
+            };
+        }
+
+        function generateDetailedHealthPrediction(planets, houses) {
+            return {
+                title: "Health & Wellness",
+                content: "Your health patterns are determined by the 6th house (diseases), 8th house (chronic conditions), and 12th house (hospitalization), along with planetary influences.",
+                subsections: {
+                    planetaryPositions: {
+                        title: "Planetary Positions & Impact",
+                        content: "The Moon represents your general constitution and mind. Mars affects blood, muscles, and energy levels. Mercury influences the nervous system. Jupiter governs liver and fat metabolism. Saturn relates to bones, teeth, and chronic conditions."
+                    },
+                    yogas: {
+                        title: "Yogas & Planetary Combinations",
+                        content: "Benefic planets in the 6th house create Viparita Raja Yoga, indicating good health and ability to overcome diseases. Strong aspects from Jupiter to the ascendant provide natural immunity and healing abilities."
+                    },
+                    doshas: {
+                        title: "Doshas & Astrological Afflictions",
+                        content: "Malefic planets in the 6th, 8th, or 12th houses may indicate health challenges. The Trimsamsa (D30) chart reveals specific periods requiring extra health care. Rahu-Ketu axis affects areas needing attention."
+                    },
+                    dashas: {
+                        title: "Predictions & Time Periods (Dashas)",
+                        content: "Health issues are more likely during the Mahadasha or Antardasha of malefic planets or those afflicting health houses. Favorable periods of Jupiter and Venus promote healing and recovery. Saturn periods require attention to chronic conditions."
+                    },
+                    remedies: {
+                        title: "Remediation & Recommendations",
+                        content: "Regular yoga and meditation strengthen the Moon and reduce stress. Wearing a red coral (for Mars) or emerald (for Mercury) as per chart requirements. Donating medicines and fruits on Saturdays. Reciting Mahamrityunjaya Mantra for overall health protection."
+                    }
+                }
+            };
+        }
+
+        function generateDetailedRelationshipPrediction(planets, houses) {
+            return {
+                title: "Relationships & Marriage",
+                content: "Your relationship patterns are governed by the 7th house (marriage), Venus (love), and the Navamsa chart (D9) which reveals deeper relationship dynamics.",
+                subsections: {
+                    planetaryPositions: {
+                        title: "Planetary Positions & Impact",
+                        content: "Venus represents love, attraction, and marital happiness. The 7th house lord's position shows the nature of your spouse and marriage. Jupiter (for women) or Venus (for men) as relationship significator influences partnership quality. Mars affects passion and conflicts in relationships."
+                    },
+                    yogas: {
+                        title: "Yogas & Planetary Combinations",
+                        content: "Benefic planets in the 7th house or aspecting it create harmonious relationships. Venus-Jupiter conjunction brings a spiritual and loving partnership. Mars-Venus combinations indicate passionate relationships but may need balance to avoid conflicts."
+                    },
+                    doshas: {
+                        title: "Doshas & Astrological Afflictions",
+                        content: "Mangal Dosha (Mars affliction) may cause delays or challenges in marriage requiring specific remedies. Afflictions to Venus or the 7th house can create relationship difficulties. The Navamsa chart reveals hidden aspects of marital compatibility."
+                    },
+                    dashas: {
+                        title: "Predictions & Time Periods (Dashas)",
+                        content: "Marriage is most likely during the Mahadasha or Antardasha of the 7th lord, Venus, or Jupiter. Favorable periods for relationships occur when benefic planets transit through the 7th house or aspect it positively. Relationship challenges may arise during malefic planetary periods."
+                    },
+                    remedies: {
+                        title: "Remediation & Recommendations",
+                        content: "Strengthen Venus through white or pastel clothing and diamond/white sapphire if suitable. Worship Goddess Lakshmi for marital harmony. Donate white items and sweets on Fridays. Chant 'Om Shukraya Namaha' for improving relationship prospects and harmony."
+                    }
+                }
+            };
+        }
+
+        function generateDetailedFinancePrediction(planets, houses) {
+            return {
+                title: "Finance & Wealth",
+                content: "Your financial prospects are determined by the 2nd house (wealth), 11th house (gains), and various Dhana Yogas formed in your chart.",
+                subsections: {
+                    planetaryPositions: {
+                        title: "Planetary Positions & Impact",
+                        content: "The 2nd house lord shows primary wealth sources and family assets. Jupiter indicates wisdom in investments and spiritual wealth. Venus brings luxury and material comforts. Mercury affects business acumen and trading profits. Saturn represents slow but steady accumulation."
+                    },
+                    yogas: {
+                        title: "Yogas & Planetary Combinations",
+                        content: "Dhana Yoga combinations involving the 2nd, 5th, 9th, and 11th houses create wealth opportunities. Lakshmi Yoga brings prosperity and abundance. Kubera Yoga indicates multiple income sources and financial stability. Strong aspects between wealth houses multiply earning potential."
+                    },
+                    doshas: {
+                        title: "Doshas & Astrological Afflictions",
+                        content: "Malefic influences on the 2nd or 11th houses may cause financial instability or losses. Rahu in wealth houses can bring sudden gains but also risks. Afflicted Venus might lead to overspending on luxuries. Saturn's adverse aspects may cause financial delays."
+                    },
+                    dashas: {
+                        title: "Predictions & Time Periods (Dashas)",
+                        content: "Wealth accumulation peaks during the Mahadasha of the 2nd or 11th house lords. Jupiter periods bring prosperity through wisdom and good counsel. Venus periods favor luxury business and artistic ventures. Saturn periods require disciplined saving and long-term investments."
+                    },
+                    remedies: {
+                        title: "Remediation & Recommendations",
+                        content: "Strengthen Jupiter with yellow sapphire if suitable and donate yellow items on Thursdays. Keep a silver coin in your wallet and worship Goddess Lakshmi. Avoid get-rich-quick schemes during Rahu periods. Invest in property during favorable Saturn transits."
+                    }
+                }
+            };
+        }
+
+        function generateDetailedEducationPrediction(planets, houses) {
+            return {
+                title: "Education & Learning",
+                content: "Your educational journey is influenced by the 4th house (basic education), 5th house (intelligence), and 9th house (higher learning), along with Mercury and Jupiter.",
+                subsections: {
+                    planetaryPositions: {
+                        title: "Planetary Positions & Impact",
+                        content: "Mercury governs analytical thinking, communication, and basic learning abilities. Jupiter represents wisdom, philosophy, and higher education. The 4th house shows early educational environment. The 5th house indicates intelligence and creative learning. The 9th house affects university education and specialized knowledge."
+                    },
+                    yogas: {
+                        title: "Yogas & Planetary Combinations",
+                        content: "Saraswati Yoga (formed by Mercury, Jupiter, and Venus) indicates exceptional learning abilities and scholarly pursuits. Budha-Aditya Yoga enhances intellectual capabilities. Strong 5th house combinations suggest success in competitive examinations and research fields."
+                    },
+                    doshas: {
+                        title: "Doshas & Astrological Afflictions",
+                        content: "Afflicted Mercury may cause learning difficulties or communication problems. Malefic influences on the 4th house can disrupt early education. Rahu in education houses may create unconventional learning paths or foreign education opportunities but with some challenges."
+                    },
+                    dashas: {
+                        title: "Predictions & Time Periods (Dashas)",
+                        content: "The Chaturvimsamsa (D24) chart shows optimal periods for education. Mercury periods favor academic studies and skill development. Jupiter periods are excellent for higher education, research, and spiritual learning. Venus periods support artistic and creative education."
+                    },
+                    remedies: {
+                        title: "Remediation & Recommendations",
+                        content: "Worship Goddess Saraswati for enhanced learning. Wear emerald for Mercury strength if suitable. Study during Mercury and Jupiter hours. Keep educational books organized and respect them. Donate books and stationery to students on Wednesdays."
+                    }
+                }
+            };
+        }
+
+        function generateDetailedFamilyPrediction(planets, houses) {
+            return {
+                title: "Family & Domestic Life",
+                content: "Family relationships are governed by various houses: 2nd (family), 4th (mother/home), 9th (father), and the Dwadasamsa chart (D12) revealing ancestral influences.",
+                subsections: {
+                    planetaryPositions: {
+                        title: "Planetary Positions & Impact",
+                        content: "The Moon represents your mother and emotional bonds with family. The Sun indicates your father and paternal influences. Jupiter shows family wisdom and prosperity. Venus affects family harmony and comforts. Saturn represents family responsibilities and traditions."
+                    },
+                    yogas: {
+                        title: "Yogas & Planetary Combinations",
+                        content: "Benefic planets in the 4th house create strong maternal bonds and comfortable homes. Jupiter-Moon combinations enhance family prosperity and emotional security. Venus in family houses brings luxury and harmonious family relationships."
+                    },
+                    doshas: {
+                        title: "Doshas & Astrological Afflictions",
+                        content: "Malefic influences on family houses may cause family disputes or separations. Afflicted Moon can create emotional distance from mother. Saturn's adverse aspects might bring family responsibilities or restrictions. Rahu-Ketu axis affects areas requiring family attention."
+                    },
+                    dashas: {
+                        title: "Predictions & Time Periods (Dashas)",
+                        content: "Family events and changes are prominent during the Mahadasha of planets influencing family houses. Moon periods strengthen maternal relationships. Sun periods focus on paternal bonds. Jupiter periods bring family expansion and prosperity. The Dwadasamsa chart shows specific family karma and timing."
+                    },
+                    remedies: {
+                        title: "Remediation & Recommendations",
+                        content: "Respect and serve your parents for positive family karma. Keep a family photo in the northeast corner of your home. Worship your family deity regularly. Donate to orphanages and old age homes. Perform Pitru Paksha rituals for ancestral blessings."
+                    }
+                }
+            };
+        }
+
+        function generateDetailedSpiritualPrediction(planets, houses) {
+            return {
+                title: "Spiritual Growth & Philosophy",
+                content: "Your spiritual path is indicated by the 12th house (moksha), 9th house (dharma), and the Vimsamsa chart (D20) which reveals your spiritual inclinations and religious practices.",
+                subsections: {
+                    planetaryPositions: {
+                        title: "Planetary Positions & Impact",
+                        content: "Jupiter represents spiritual wisdom, dharma, and religious practices. Ketu indicates past-life spiritual development and detachment. The Moon affects devotional practices and spiritual emotions. Saturn teaches through trials leading to spiritual growth. The 12th house shows liberation and mystical experiences."
+                    },
+                    yogas: {
+                        title: "Yogas & Planetary Combinations",
+                        content: "Spiritual combinations include Ketu with benefics creating mystical experiences. Jupiter-Ketu conjunction indicates deep spiritual wisdom. 12th house planets promote renunciation and spiritual practices. Raja Yoga in spiritual houses brings recognition in religious fields."
+                    },
+                    doshas: {
+                        title: "Doshas & Astrological Afflictions",
+                        content: "Excessive materialism may arise from afflicted spiritual houses. Rahu's influence can create spiritual confusion or false gurus. Malefic aspects to the 9th house might challenge religious beliefs. However, these challenges often lead to deeper spiritual understanding."
+                    },
+                    dashas: {
+                        title: "Predictions & Time Periods (Dashas)",
+                        content: "Spiritual awakening intensifies during Jupiter and Ketu periods. The Vimsamsa (D20) chart shows optimal times for spiritual practices and religious activities. The Shashtiamsa (D60) reveals past-life karmic influences affecting your spiritual evolution. Meditation and spiritual studies are favored during certain planetary periods."
+                    },
+                    remedies: {
+                        title: "Remediation & Recommendations",
+                        content: "Regular meditation and prayer deepen spiritual connection. Visit temples and sacred places during Jupiter periods. Study spiritual texts and practice yoga. Serve the poor and needy as spiritual practice. Chant mantras appropriate to your planetary influences. Practice detachment and gratitude for spiritual growth."
+                    }
+                }
+            };
+        }
+
+        function generateYogaAnalysis(planets, houses, ascendant) {
+            const yogas = [
+                "Raja Yoga combinations indicate leadership potential and success through merit",
+                "Dhana Yoga suggests wealth accumulation through multiple sources",
+                "Gaja Kesari Yoga enhances wisdom, reputation, and prosperity",
+                "Budha-Aditya Yoga strengthens intelligence and communication abilities",
+                "Malavya Yoga (if Venus is strong) brings artistic talents and luxury"
+            ];
+            return yogas[Math.floor(Math.random() * yogas.length)] + ". The strength and placement of these yoga-forming planets determine the magnitude of results.";
+        }
+
+        function generateDoshaAnalysis(planets, houses, moonSign) {
+            const doshas = [
+                "Mangal Dosha requires specific remedies before marriage for harmony",
+                "Kaal Sarpa Dosha may create challenges that lead to spiritual growth",
+                "Shani Dosha teaches patience and rewards disciplined effort",
+                "No major doshas detected, indicating a generally balanced chart",
+                "Minor planetary afflictions can be mitigated through appropriate remedies"
+            ];
+            return doshas[Math.floor(Math.random() * doshas.length)] + " Regular prayers and positive actions can neutralize negative influences.";
+        }
+
+        function generateDashaAnalysis(planets, houses) {
+            const dashas = [
+                "Current planetary period favors new beginnings and growth opportunities",
+                "Upcoming major period will bring significant life changes and advancement",
+                "Venus period promotes relationships, creativity, and material comforts",
+                "Jupiter period enhances wisdom, spirituality, and prosperity",
+                "Saturn period teaches discipline and brings long-term stability"
+            ];
+            return dashas[Math.floor(Math.random() * dashas.length)] + " The sub-periods within major periods fine-tune the timing of events.";
+        }
+
+        function generatePersonalityRemedies(ascendant, sunSign, moonSign) {
+            return "Strengthen your ascendant lord through appropriate gemstones and mantras. Practice meditation during sunrise for Sun sign harmony. Honor the Moon through white clothing and milk donations on Mondays. Develop the positive qualities of your signs while working on challenging aspects through spiritual practices and self-awareness.";
+        }
+
+        function getSunTraits(sunSign) {
+            const traits = {
+                1: "courage, initiative, and leadership qualities to your personality",
+                2: "stability, determination, and a love for material comforts",
+                3: "versatility, communication skills, and intellectual curiosity",
+                4: "emotional depth, nurturing tendencies, and strong family bonds",
+                5: "creativity, confidence, and a desire for recognition",
+                6: "analytical thinking, perfectionism, and service orientation",
+                7: "diplomacy, partnership focus, and artistic sensibilities",
+                8: "intensity, transformation, and deep psychological insights",
+                9: "wisdom, optimism, and philosophical outlook",
+                10: "ambition, discipline, and practical approach to goals",
+                11: "innovation, independence, and humanitarian concerns",
+                12: "compassion, spirituality, and intuitive abilities"
+            };
+            return traits[sunSign];
+        }
+
+        function getMoonTraits(moonSign) {
+            const traits = {
+                1: "emotional directness, impulsiveness, and quick reactions",
+                2: "emotional stability, need for security, and sensual pleasures",
+                3: "emotional flexibility, need for mental stimulation, and changeable moods",
+                4: "deep emotional sensitivity, strong maternal instincts, and attachment to past",
+                5: "emotional drama, need for appreciation, and generous heart",
+                6: "emotional reserve, analytical emotions, and practical caring",
+                7: "emotional balance, need for harmony, and cooperative feelings",
+                8: "emotional intensity, passionate feelings, and transformative experiences",
+                9: "emotional optimism, need for freedom, and philosophical emotions",
+                10: "emotional control, practical emotions, and ambitious feelings",
+                11: "emotional detachment, need for independence, and humanitarian emotions",
+                12: "emotional sensitivity, intuitive feelings, and compassionate nature"
+            };
+            return traits[moonSign];
+        }
+
         function displayHoroscope(data) {
+            // Display input summary
+            displayInputSummary(data.personalInfo, data.ayanamsaData);
+            
             // Display basic information
             document.getElementById('ascendant').textContent = zodiacSigns[data.ascendant].name + ' (' + zodiacSigns[data.ascendant].sanskrit + ')';
             document.getElementById('moonSign').textContent = zodiacSigns[data.moonSign].name + ' (' + zodiacSigns[data.moonSign].sanskrit + ')';
@@ -858,8 +1466,8 @@
             // Display all divisional charts
             displayAllCharts(data.divisionalCharts, data.planetaryPositions, data.houses);
 
-            // Display predictions
-            displayPredictions(data.predictions);
+            // Display detailed predictions
+            displayDetailedPredictions(data.predictions);
         }
 
         function displayAllCharts(divisionalChartsData, originalPlanets, originalHouses) {
@@ -870,14 +1478,14 @@
                 const chartData = divisionalChartsData[chartType];
                 const chartDiv = document.createElement('div');
                 chartDiv.className = 'chart-container';
-
+                
                 const titleDiv = document.createElement('h4');
                 titleDiv.textContent = chartData.info.name;
                 chartDiv.appendChild(titleDiv);
 
                 const chartGrid = document.createElement('div');
                 chartGrid.className = 'chart-grid';
-
+                
                 // Create chart based on type
                 if (chartType === 'D1') {
                     // Use original data for D1
@@ -886,7 +1494,7 @@
                     // Use divisional data for other charts
                     createChartGrid(chartGrid, chartData.positions, chartData.houses);
                 }
-
+                
                 chartDiv.appendChild(chartGrid);
 
                 const descriptionDiv = document.createElement('div');
@@ -906,7 +1514,7 @@
             for (let i = 1; i <= 12; i++) {
                 const houseDiv = document.createElement('div');
                 houseDiv.className = 'chart-house';
-
+                
                 const houseNumber = document.createElement('div');
                 houseNumber.className = 'house-number';
                 houseNumber.textContent = 'H' + i;
@@ -923,7 +1531,7 @@
                 Object.keys(planets).forEach(planetKey => {
                     const planetDegree = planets[planetKey];
                     const planetSign = Math.floor(planetDegree / 30) + 1;
-
+                    
                     if (planetSign === sign) {
                         const planetDiv = document.createElement('div');
                         planetDiv.className = 'planet';
@@ -936,153 +1544,40 @@
             }
         }
 
-        function generatePredictions(planets, houses, ascendant, moonSign, sunSign) {
-            const predictions = {};
-
-            predictions.personality = generatePersonalityPrediction(ascendant, sunSign, moonSign);
-            predictions.career = generateCareerPrediction(planets, houses);
-            predictions.health = generateHealthPrediction(planets, houses);
-            predictions.relationships = generateRelationshipPrediction(planets, houses);
-            predictions.finance = generateFinancePrediction(planets, houses);
-            predictions.education = generateEducationPrediction(planets, houses);
-            predictions.family = generateFamilyPrediction(planets, houses);
-            predictions.spiritual = generateSpiritualPrediction(planets, houses);
-
-            return predictions;
-        }
-
-        function generatePersonalityPrediction(ascendant, sunSign, moonSign) {
-            const ascendantTraits = {
-                1: "You are naturally confident, ambitious, and pioneering. You have strong leadership qualities and are not afraid to take initiatives.",
-                2: "You possess a steady, practical nature with a love for beauty and comfort. You are reliable and have a strong sense of values.",
-                3: "You are intellectually curious, communicative, and adaptable. You have a talent for learning and sharing information.",
-                4: "You are emotionally sensitive, nurturing, and intuitive. Family and home are very important to you.",
-                5: "You have a natural charisma, creativity, and leadership abilities. You enjoy being in the spotlight and inspiring others.",
-                6: "You are detail-oriented, analytical, and service-minded. You have a strong desire to help others and improve situations.",
-                7: "You are diplomatic, harmonious, and relationship-focused. You have a natural ability to balance different viewpoints.",
-                8: "You are intense, transformative, and mysterious. You have a deep understanding of life's hidden aspects.",
-                9: "You are philosophical, optimistic, and adventure-loving. You have a natural inclination towards higher learning and travel.",
-                10: "You are disciplined, ambitious, and responsible. You have a strong drive for success and recognition in your career.",
-                11: "You are innovative, humanitarian, and independent. You have a unique perspective and desire to benefit society.",
-                12: "You are compassionate, intuitive, and spiritually inclined. You have a deep connection to the collective unconscious."
-            };
-
-            return {
-                title: "Personality & Character Analysis",
-                content: ascendantTraits[ascendant] + " Your Sun sign (" + zodiacSigns[sunSign].name + ") adds " + getSunTraits(sunSign) + " Your Moon sign (" + zodiacSigns[moonSign].name + ") influences your emotional nature with " + getMoonTraits(moonSign)
-            };
-        }
-
-        function getSunTraits(sunSign) {
-            const traits = {
-                1: "courage, initiative, and leadership qualities to your personality.",
-                2: "stability, determination, and a love for material comforts.",
-                3: "versatility, communication skills, and intellectual curiosity.",
-                4: "emotional depth, nurturing tendencies, and strong family bonds.",
-                5: "creativity, confidence, and a desire for recognition.",
-                6: "analytical thinking, perfectionism, and service orientation.",
-                7: "diplomacy, partnership focus, and artistic sensibilities.",
-                8: "intensity, transformation, and deep psychological insights.",
-                9: "wisdom, optimism, and philosophical outlook.",
-                10: "ambition, discipline, and practical approach to goals.",
-                11: "innovation, independence, and humanitarian concerns.",
-                12: "compassion, spirituality, and intuitive abilities."
-            };
-            return traits[sunSign];
-        }
-
-        function getMoonTraits(moonSign) {
-            const traits = {
-                1: "emotional directness, impulsiveness, and quick reactions.",
-                2: "emotional stability, need for security, and sensual pleasures.",
-                3: "emotional flexibility, need for mental stimulation, and changeable moods.",
-                4: "deep emotional sensitivity, strong maternal instincts, and attachment to past.",
-                5: "emotional drama, need for appreciation, and generous heart.",
-                6: "emotional reserve, analytical emotions, and practical caring.",
-                7: "emotional balance, need for harmony, and cooperative feelings.",
-                8: "emotional intensity, passionate feelings, and transformative experiences.",
-                9: "emotional optimism, need for freedom, and philosophical emotions.",
-                10: "emotional control, practical emotions, and ambitious feelings.",
-                11: "emotional detachment, need for independence, and humanitarian emotions.",
-                12: "emotional sensitivity, intuitive feelings, and compassionate nature."
-            };
-            return traits[moonSign];
-        }
-
-        function generateCareerPrediction(planets, houses) {
-            const careerAdvice = [
-                "Your planetary positions suggest strong potential in leadership roles and entrepreneurial ventures. The divisional charts indicate favorable periods for career advancement.",
-                "You have natural talents that can be channeled into creative or artistic fields. Your Dasamsa chart shows recognition and success in chosen profession.",
-                "Your analytical mind and attention to detail make you suitable for technical or research-based careers. Consider fields involving precision and expertise.",
-                "Your communication skills and people-oriented nature point towards careers in education, counseling, or media. Public relations and marketing may also be suitable.",
-                "Your practical nature and organizational skills suggest success in business or administrative roles. Management positions will bring satisfaction.",
-                "Your innovative thinking and humanitarian values indicate potential in social work or technology sectors. Consider careers that benefit society."
-            ];
-
-            return {
-                title: "Career & Professional Life",
-                content: careerAdvice[Math.floor(Math.random() * careerAdvice.length)] + " Focus on developing your natural talents while being open to learning new skills. The Dasamsa (D10) chart shows significant career opportunities between ages 28-35. Your professional reputation will grow steadily through dedicated effort."
-            };
-        }
-
-        function generateHealthPrediction(planets, houses) {
-            return {
-                title: "Health & Wellness",
-                content: "Your constitution shows good overall health potential, but attention to stress management is essential. The Trimsamsa (D30) chart indicates periods requiring extra care for health. Regular exercise, particularly activities that combine physical and mental discipline like yoga, would be beneficial. Watch for seasonal health fluctuations and maintain a consistent sleep schedule. Digestive health requires attention - favor fresh, home-cooked meals over processed foods. Preventive health measures taken now will ensure long-term vitality."
-            };
-        }
-
-        function generateRelationshipPrediction(planets, houses) {
-            return {
-                title: "Relationships & Marriage",
-                content: "Your planetary positions indicate a strong capacity for meaningful relationships. The Navamsa (D9) chart reveals deep insights about your marriage and partnership potential. You value loyalty and emotional security in partnerships. Marriage prospects look favorable, with potential for a harmonious union that brings both emotional fulfillment and practical stability. Your spouse may be from a different cultural or educational background. Family relationships are important to you, and you may take on a nurturing role within your family circle. Communication and mutual understanding will be key factors in all your relationships."
-            };
-        }
-
-        function generateFinancePrediction(planets, houses) {
-            return {
-                title: "Finance & Wealth",
-                content: "Your financial life shows steady growth potential through disciplined savings and smart investments. Multiple income sources may develop over time, as indicated by various divisional charts. Property investments could be particularly favorable. Avoid impulsive spending and focus on building long-term wealth rather than seeking quick gains. The period after age 30 may bring increased financial stability and opportunities for wealth accumulation. Your practical approach to money management will serve you well throughout life."
-            };
-        }
-
-        function generateEducationPrediction(planets, houses) {
-            return {
-                title: "Education & Learning",
-                content: "You have a natural affinity for learning and may excel in subjects that require both analytical and creative thinking. The Chaturvimsamsa (D24) chart shows strong educational potential. Higher education prospects are favorable, and you may pursue specialized knowledge or professional qualifications. Continuous learning throughout life will be important for your growth. Consider fields that combine practical application with theoretical knowledge. Your educational journey may include studying abroad or learning from diverse cultural perspectives."
-            };
-        }
-
-        function generateFamilyPrediction(planets, houses) {
-            return {
-                title: "Family & Domestic Life",
-                content: "Family plays a central role in your life, and you have strong bonds with parents and siblings. The Dwadasamsa (D12) chart reveals ancestral influences and family karma. Your home environment is likely to be harmonious and comfortable. You may inherit property or assets from family. Relationships with in-laws after marriage are generally positive. You have the potential to be an excellent parent, providing both discipline and emotional support to your children. Family traditions and values are important to you."
-            };
-        }
-
-        function generateSpiritualPrediction(planets, houses) {
-            return {
-                title: "Spiritual Growth & Philosophy",
-                content: "You have a natural inclination towards spiritual matters and philosophy. The Vimsamsa (D20) chart indicates your spiritual path and religious inclinations. Meditation, prayer, or other spiritual practices can bring you peace and clarity. You may be drawn to studying ancient wisdom, yoga, or alternative healing methods. Your spiritual journey will likely deepen with age, and you may become a guide for others seeking spiritual understanding. Pilgrimage or visits to sacred places may be spiritually significant. The Shashtiamsa (D60) chart suggests past life karmic influences that shape your spiritual evolution."
-            };
-        }
-
-        function displayPredictions(predictions) {
+        function displayDetailedPredictions(predictions) {
             const predictionsContainer = document.getElementById('predictions');
             predictionsContainer.innerHTML = '<h3>🔮 Detailed Vedic Predictions</h3>';
 
             Object.values(predictions).forEach(prediction => {
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'prediction-section';
-
+                
                 const titleDiv = document.createElement('h4');
                 titleDiv.textContent = prediction.title;
                 sectionDiv.appendChild(titleDiv);
-
+                
                 const contentDiv = document.createElement('p');
                 contentDiv.textContent = prediction.content;
                 sectionDiv.appendChild(contentDiv);
 
+                // Add subsections if they exist
+                if (prediction.subsections) {
+                    Object.values(prediction.subsections).forEach(subsection => {
+                        const subsectionDiv = document.createElement('div');
+                        subsectionDiv.className = 'prediction-subsection';
+                        
+                        const subsectionTitle = document.createElement('h5');
+                        subsectionTitle.textContent = subsection.title;
+                        subsectionDiv.appendChild(subsectionTitle);
+                        
+                        const subsectionContent = document.createElement('p');
+                        subsectionContent.textContent = subsection.content;
+                        subsectionDiv.appendChild(subsectionContent);
+                        
+                        sectionDiv.appendChild(subsectionDiv);
+                    });
+                }
+                
                 predictionsContainer.appendChild(sectionDiv);
             });
         }
@@ -1095,56 +1590,59 @@
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-
-            // Set font
+            
+            // Set font to Roboto equivalent (Helvetica as fallback)
             doc.setFont('helvetica');
-
+            
             let yPosition = 20;
             const pageWidth = doc.internal.pageSize.getWidth();
             const margin = 20;
             const lineHeight = 7;
-
+            
             // Title
             doc.setFontSize(20);
             doc.setTextColor(102, 126, 234);
             doc.text('Nakshatra Vidhi - Complete Vedic Report', pageWidth / 2, yPosition, { align: 'center' });
             yPosition += 15;
-
+            
             // Decorative line
             doc.setDrawColor(102, 126, 234);
             doc.setLineWidth(0.5);
             doc.line(margin, yPosition, pageWidth - margin, yPosition);
             yPosition += 10;
-
-            // Personal Information
+            
+            // Input Summary
             doc.setFontSize(16);
             doc.setTextColor(0, 0, 0);
-            doc.text('Personal Information', margin, yPosition);
+            doc.text('Input Summary', margin, yPosition);
             yPosition += 10;
-
+            
             doc.setFontSize(12);
             const personalInfo = horoscopeData.personalInfo;
-            doc.text(`Name: ${personalInfo.fullName}`, margin, yPosition);
-            yPosition += lineHeight;
-            doc.text(`Gender: ${personalInfo.gender.charAt(0).toUpperCase() + personalInfo.gender.slice(1)}`, margin, yPosition);
-            yPosition += lineHeight;
-            doc.text(`Date of Birth: ${personalInfo.birthDate}`, margin, yPosition);
-            yPosition += lineHeight;
-            doc.text(`Time of Birth: ${personalInfo.birthTime}`, margin, yPosition);
-            yPosition += lineHeight;
-            doc.text(`Place of Birth: ${personalInfo.birthPlace}`, margin, yPosition);
-            yPosition += lineHeight;
-            doc.text(`Chart Style: ${personalInfo.chartStyle} Indian`, margin, yPosition);
-            yPosition += lineHeight;
-            doc.text(`Language: ${personalInfo.language}`, margin, yPosition);
-            yPosition += 15;
-
+            const summaryData = [
+                `Name: ${personalInfo.fullName}`,
+                `Gender: ${personalInfo.gender.charAt(0).toUpperCase() + personalInfo.gender.slice(1)}`,
+                `Date of Birth: ${personalInfo.birthDate}`,
+                `Time of Birth: ${personalInfo.birthTime}`,
+                `Place of Birth: ${personalInfo.birthPlace}`,
+                `Coordinates: ${personalInfo.latitude}°N, ${personalInfo.longitude}°E`,
+                `Chart Style: ${personalInfo.chartStyle} Indian`,
+                `Language: ${personalInfo.language}`,
+                `Ayanamsa: ${horoscopeData.ayanamsaData.degrees}° ${horoscopeData.ayanamsaData.minutes}' ${horoscopeData.ayanamsaData.seconds}" (${personalInfo.ayanamsa})`
+            ];
+            
+            summaryData.forEach(item => {
+                doc.text(item, margin, yPosition);
+                yPosition += lineHeight;
+            });
+            yPosition += 10;
+            
             // Astrological Summary
             doc.setFontSize(16);
             doc.setTextColor(102, 126, 234);
             doc.text('Astrological Summary', margin, yPosition);
             yPosition += 10;
-
+            
             doc.setFontSize(12);
             doc.setTextColor(0, 0, 0);
             doc.text(`Ascendant (Lagna): ${zodiacSigns[horoscopeData.ascendant].name} (${zodiacSigns[horoscopeData.ascendant].sanskrit})`, margin, yPosition);
@@ -1158,48 +1656,86 @@
             doc.text(`Pada: ${horoscopeData.pada}`, margin, yPosition);
             yPosition += 15;
 
-            // Divisional Charts Information
+            // Add Charts Section
             doc.setFontSize(16);
             doc.setTextColor(102, 126, 234);
-            doc.text('Divisional Charts Analysis', margin, yPosition);
+            doc.text('Divisional Charts', margin, yPosition);
             yPosition += 10;
-
+            
             doc.setFontSize(10);
             doc.setTextColor(0, 0, 0);
             Object.keys(horoscopeData.divisionalCharts).forEach(chartType => {
-                const chartInfo = horoscopeData.divisionalCharts[chartType].info;
-                doc.text(`${chartInfo.name}: ${chartInfo.description}`, margin, yPosition);
-                yPosition += 5;
-            });
-            yPosition += 10;
-
-            // Predictions
-            doc.setFontSize(16);
-            doc.setTextColor(102, 126, 234);
-            doc.text('Detailed Predictions', margin, yPosition);
-            yPosition += 10;
-
-            Object.values(horoscopeData.predictions).forEach(prediction => {
-                // Check if we need a new page
                 if (yPosition > 250) {
                     doc.addPage();
                     yPosition = 20;
                 }
-
+                
+                const chartInfo = horoscopeData.divisionalCharts[chartType].info;
+                doc.setFontSize(12);
+                doc.setTextColor(102, 126, 234);
+                doc.text(chartInfo.name, margin, yPosition);
+                yPosition += 6;
+                
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                doc.text(chartInfo.description, margin, yPosition);
+                yPosition += 8;
+                
+                // Add chart representation (simplified)
+                doc.text('[Chart visualization would appear here in full implementation]', margin + 10, yPosition);
+                yPosition += 12;
+            });
+            
+            // Detailed Predictions
+            doc.setFontSize(16);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Detailed Predictions', margin, yPosition);
+            yPosition += 10;
+            
+            Object.values(horoscopeData.predictions).forEach(prediction => {
+                // Check if we need a new page
+                if (yPosition > 220) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                
                 doc.setFontSize(14);
                 doc.setTextColor(102, 126, 234);
                 doc.text(prediction.title, margin, yPosition);
                 yPosition += 8;
-
+                
                 doc.setFontSize(10);
                 doc.setTextColor(0, 0, 0);
-
-                // Split long text into lines
+                
+                // Main content
                 const splitText = doc.splitTextToSize(prediction.content, pageWidth - 2 * margin);
                 doc.text(splitText, margin, yPosition);
                 yPosition += splitText.length * 5 + 5;
+                
+                // Subsections
+                if (prediction.subsections) {
+                    Object.values(prediction.subsections).forEach(subsection => {
+                        if (yPosition > 240) {
+                            doc.addPage();
+                            yPosition = 20;
+                        }
+                        
+                        doc.setFontSize(11);
+                        doc.setTextColor(60, 60, 60);
+                        doc.text(subsection.title, margin + 10, yPosition);
+                        yPosition += 6;
+                        
+                        doc.setFontSize(9);
+                        doc.setTextColor(0, 0, 0);
+                        const subsectionText = doc.splitTextToSize(subsection.content, pageWidth - 2 * margin - 20);
+                        doc.text(subsectionText, margin + 10, yPosition);
+                        yPosition += subsectionText.length * 4 + 8;
+                    });
+                }
+                
+                yPosition += 5;
             });
-
+            
             // Footer
             const pageCount = doc.internal.getNumberOfPages();
             for (let i = 1; i <= pageCount; i++) {
@@ -1208,7 +1744,7 @@
                 doc.setTextColor(128, 128, 128);
                 doc.text(`Generated by Nakshatra Vidhi on ${new Date().toLocaleDateString()} | Page ${i} of ${pageCount}`, margin, doc.internal.pageSize.getHeight() - 10);
             }
-
+            
             // Save the PDF
             const fileName = `Nakshatra_Vidhi_${personalInfo.fullName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
             doc.save(fileName);
@@ -1218,6 +1754,8 @@
             document.getElementById('horoscopeForm').reset();
             document.getElementById('results').style.display = 'none';
             document.getElementById('languageGroup').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
             document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
             horoscopeData = {};
         }
