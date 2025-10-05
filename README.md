@@ -19,7 +19,7 @@ A comprehensive, self-sufficient HTML application for generating detailed Hindu/
 
 ## 🚀 Live Demo
 
-**[Launch Nakshatra Vidhi →](https://rajupantina91-cloud.github.io/nakshatra-vidhi/)**
+**[Launch Nakshatra Vidhi →](https://rajupantina91-cloud.github.io/Nakshatra-Vidhi/)**
 
 ## 📊 Divisional Charts Supported
 
