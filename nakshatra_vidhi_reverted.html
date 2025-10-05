@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nakshatra Vidhi - Vedic Astrology Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .form-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            font-weight: 600;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .generate-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: none;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border-left: 5px solid #667eea;
+        }
+
+        .chart-container h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            max-width: 300px;
+            margin: 20px auto;
+            background: #333;
+        }
+
+        .chart-house {
+            background: white;
+            padding: 12px 5px;
+            font-size: 11px;
+            font-weight: bold;
+            min-height: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ddd;
+        }
+
+        .house-number {
+            font-size: 9px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .planet {
+            background: #667eea;
+            color: white;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 7px;
+            margin: 1px;
+        }
+
+        .chart-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .predictions {
+            margin-top: 30px;
+        }
+
+        .prediction-section {
+            background: #f8f9fa;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .prediction-section h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .download-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 20px 10px;
+            transition: background 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #219a52;
+        }
+
+        .chart-description {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .chart-grid {
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌟 Nakshatra Vidhi 🌟</h1>
+            <p>Complete Vedic Astrology Chart Generator with Divisional Analysis</p>
+        </div>
+
+        <div class="form-container">
+            <form id="horoscopeForm">
+                <div class="form-grid">
+                    <!-- Basic Birth Information -->
+                    <div class="form-section">
+                        <h3>📅 Basic Birth Information</h3>
+
+                        <div class="form-group">
+                            <label for="fullName">Full Name <span class="required">*</span></label>
+                            <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender">Gender <span class="required">*</span></label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="birthDate">Date of Birth <span class="required">*</span></label>
+                            <input type="date" id="birthDate" name="birthDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="birthTime">Time of Birth <span class="required">*</span></label>
+                            <input type="time" id="birthTime" name="birthTime" required>
+                        </div>
+                    </div>
+
+                    <!-- Location Information -->
+                    <div class="form-section">
+                        <h3>📍 Birth Location</h3>
+
+                        <div class="form-group">
+                            <label for="birthPlace">Birth Place <span class="required">*</span></label>
+                            <input type="text" id="birthPlace" name="birthPlace" required placeholder="City, State, Country">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="latitude">Latitude <span class="required">*</span></label>
+                            <input type="number" id="latitude" name="latitude" step="0.0001" required placeholder="e.g., 28.6139">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="longitude">Longitude <span class="required">*</span></label>
+                            <input type="number" id="longitude" name="longitude" step="0.0001" required placeholder="e.g., 77.2090">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="timezone">Timezone <span class="required">*</span></label>
+                            <select id="timezone" name="timezone" required>
+                                <option value="">Select Timezone</option>
+                                <option value="5.5">IST (GMT +5:30)</option>
+                                <option value="0">GMT (GMT +0:00)</option>
+                                <option value="-5">EST (GMT -5:00)</option>
+                                <option value="-8">PST (GMT -8:00)</option>
+                                <option value="1">CET (GMT +1:00)</option>
+                                <option value="9">JST (GMT +9:00)</option>
+                                <option value="8">CST (GMT +8:00)</option>
+                                <option value="10">AEST (GMT +10:00)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Regional Preferences -->
+                    <div class="form-section">
+                        <h3>🏛️ Regional Preferences</h3>
+
+                        <div class="form-group">
+                            <label for="chartStyle">Chart Style <span class="required">*</span></label>
+                            <select id="chartStyle" name="chartStyle" required>
+                                <option value="">Select Chart Style</option>
+                                <option value="north">North Indian (Diamond)</option>
+                                <option value="south">South Indian (Square)</option>
+                                <option value="east">East Indian (Bengali)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="languageGroup" style="display: none;">
+                            <label for="language">Language <span class="required">*</span></label>
+                            <select id="language" name="language">
+                                <option value="">Select Language</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ayanamsa">Ayanamsa</label>
+                            <select id="ayanamsa" name="ayanamsa">
+                                <option value="lahiri">Lahiri (Chitra Paksha)</option>
+                                <option value="raman">Raman</option>
+                                <option value="krishnamurti">Krishnamurti (KP)</option>
+                                <option value="yukteshwar">Yukteshwar</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="calendarSystem">Calendar System</label>
+                            <select id="calendarSystem" name="calendarSystem">
+                                <option value="lunar">Lunar (Panchang)</option>
+                                <option value="solar">Solar</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Output Options -->
+                    <div class="form-section">
+                        <h3>📊 Output Options</h3>
+
+                        <div class="form-group">
+                            <label for="reportType">Report Detail Level</label>
+                            <select id="reportType" name="reportType">
+                                <option value="basic">Basic Report</option>
+                                <option value="detailed">Detailed Report</option>
+                                <option value="comprehensive">Comprehensive Report</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="includeDivisional">Divisional Charts</label>
+                            <select id="includeDivisional" name="includeDivisional">
+                                <option value="basic">D1 (Birth Chart) Only</option>
+                                <option value="essential">D1 + D9 (Navamsa)</option>
+                                <option value="extended">D1 + D9 + D10 + D12</option>
+                                <option value="complete">All Major Divisional Charts</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="generate-btn" id="generateBtn">
+                    ✨ Generate My Complete Horoscope ✨
+                </button>
+            </form>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <h3>Calculating Your Vedic Charts...</h3>
+            <p>Please wait while we compute planetary positions and generate all divisional charts.</p>
+        </div>
+
+        <div class="results" id="results">
+            <h2>🌟 Your Complete Nakshatra Vidhi Report 🌟</h2>
+
+            <div class="chart-info">
+                <h3>Basic Astrological Information</h3>
+                <p><strong>Ascendant (Lagna):</strong> <span id="ascendant">-</span></p>
+                <p><strong>Moon Sign (Rasi):</strong> <span id="moonSign">-</span></p>
+                <p><strong>Sun Sign:</strong> <span id="sunSign">-</span></p>
+                <p><strong>Nakshatra:</strong> <span id="nakshatra">-</span></p>
+                <p><strong>Pada:</strong> <span id="pada">-</span></p>
+            </div>
+
+            <div class="charts-container" id="chartsContainer">
+                <!-- Charts will be populated by JavaScript -->
+            </div>
+
+            <div class="predictions" id="predictions">
+                <!-- Predictions will be populated by JavaScript -->
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="download-btn" onclick="downloadPDF()">
+                    📄 Download Complete PDF Report
+                </button>
+                <button class="download-btn" onclick="generateNewHoroscope()" style="background: #3498db;">
+                    🔄 Generate New Horoscope
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Language options based on chart style
+        const languageOptions = {
+            north: [
+                { value: 'hindi', text: 'Hindi (हिंदी)' },
+                { value: 'punjabi', text: 'Punjabi (ਪੰਜਾਬੀ)' },
+                { value: 'gujarati', text: 'Gujarati (ગુજરાતી)' },
+                { value: 'marathi', text: 'Marathi (मराठी)' },
+                { value: 'english', text: 'English' }
+            ],
+            south: [
+                { value: 'tamil', text: 'Tamil (தமிழ்)' },
+                { value: 'telugu', text: 'Telugu (తెలుగు)' },
+                { value: 'kannada', text: 'Kannada (ಕನ್ನಡ)' },
+                { value: 'malayalam', text: 'Malayalam (മലയാളം)' },
+                { value: 'english', text: 'English' }
+            ],
+            east: [
+                { value: 'bengali', text: 'Bengali (বাংলা)' },
+                { value: 'assamese', text: 'Assamese (অসমীয়া)' },
+                { value: 'odia', text: 'Odia (ଓଡ଼ିଆ)' },
+                { value: 'english', text: 'English' }
+            ]
+        };
+
+        // Zodiac signs and their properties
+        const zodiacSigns = {
+            1: { name: 'Aries', sanskrit: 'Mesha', element: 'Fire', ruler: 'Mars' },
+            2: { name: 'Taurus', sanskrit: 'Vrishabha', element: 'Earth', ruler: 'Venus' },
+            3: { name: 'Gemini', sanskrit: 'Mithuna', element: 'Air', ruler: 'Mercury' },
+            4: { name: 'Cancer', sanskrit: 'Karka', element: 'Water', ruler: 'Moon' },
+            5: { name: 'Leo', sanskrit: 'Simha', element: 'Fire', ruler: 'Sun' },
+            6: { name: 'Virgo', sanskrit: 'Kanya', element: 'Earth', ruler: 'Mercury' },
+            7: { name: 'Libra', sanskrit: 'Tula', element: 'Air', ruler: 'Venus' },
+            8: { name: 'Scorpio', sanskrit: 'Vrishchika', element: 'Water', ruler: 'Mars' },
+            9: { name: 'Sagittarius', sanskrit: 'Dhanu', element: 'Fire', ruler: 'Jupiter' },
+            10: { name: 'Capricorn', sanskrit: 'Makara', element: 'Earth', ruler: 'Saturn' },
+            11: { name: 'Aquarius', sanskrit: 'Kumbha', element: 'Air', ruler: 'Saturn' },
+            12: { name: 'Pisces', sanskrit: 'Meena', element: 'Water', ruler: 'Jupiter' }
+        };
+
+        const planets = {
+            'sun': { name: 'Sun', sanskrit: 'Surya', symbol: '☉' },
+            'moon': { name: 'Moon', sanskrit: 'Chandra', symbol: '☽' },
+            'mars': { name: 'Mars', sanskrit: 'Mangal', symbol: '♂' },
+            'mercury': { name: 'Mercury', sanskrit: 'Budha', symbol: '☿' },
+            'jupiter': { name: 'Jupiter', sanskrit: 'Guru', symbol: '♃' },
+            'venus': { name: 'Venus', sanskrit: 'Shukra', symbol: '♀' },
+            'saturn': { name: 'Saturn', sanskrit: 'Shani', symbol: '♄' },
+            'rahu': { name: 'Rahu', sanskrit: 'Rahu', symbol: '☊' },
+            'ketu': { name: 'Ketu', sanskrit: 'Ketu', symbol: '☋' }
+        };
+
+        // Nakshatras
+        const nakshatras = [
+            'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra',
+            'Punarvasu', 'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni',
+            'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
+            'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta', 'Shatabhisha',
+            'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
+        ];
+
+        // Divisional Charts Information
+        const divisionalCharts = {
+            'D1': { name: 'Rasi Chart (D1)', description: 'Birth Chart - Overall personality and life events' },
+            'D9': { name: 'Navamsa (D9)', description: 'Marriage, spouse, spiritual path, and inner strength' },
+            'D10': { name: 'Dasamsa (D10)', description: 'Career, profession, status, and reputation' },
+            'D12': { name: 'Dwadasamsa (D12)', description: 'Parents, ancestry, and hereditary influences' },
+            'D16': { name: 'Shodasamsa (D16)', description: 'Vehicles, happiness, and material comforts' },
+            'D20': { name: 'Vimsamsa (D20)', description: 'Spiritual practices, devotion, and religious activities' },
+            'D24': { name: 'Chaturvimsamsa (D24)', description: 'Education, knowledge, and learning abilities' },
+            'D27': { name: 'Bhamsa (D27)', description: 'Strengths, weaknesses, and physical vitality' },
+            'D30': { name: 'Trimsamsa (D30)', description: 'Misfortunes, diseases, and negative influences' },
+            'D40': { name: 'Khavedamsa (D40)', description: 'Maternal relatives and mother\'s influence' },
+            'D45': { name: 'Akshavedamsa (D45)', description: 'Paternal relatives and father\'s influence' },
+            'D60': { name: 'Shashtiamsa (D60)', description: 'Past life karmas and overall life assessment' }
+        };
+
+        // Global variables to store horoscope data
+        let horoscopeData = {};
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default values
+            document.getElementById('ayanamsa').value = 'lahiri';
+            document.getElementById('calendarSystem').value = 'lunar';
+            document.getElementById('reportType').value = 'detailed';
+            document.getElementById('includeDivisional').value = 'essential';
+            document.getElementById('timezone').value = '5.5';
+
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Chart style change handler
+            document.getElementById('chartStyle').addEventListener('change', function() {
+                const chartStyle = this.value;
+                const languageGroup = document.getElementById('languageGroup');
+                const languageSelect = document.getElementById('language');
+
+                if (chartStyle && languageOptions[chartStyle]) {
+                    languageSelect.innerHTML = '<option value="">Select Language</option>' +
+                        languageOptions[chartStyle].map(lang => 
+                            `<option value="${lang.value}">${lang.text}</option>`
+                        ).join('');
+                    languageGroup.style.display = 'block';
+                    languageSelect.required = true;
+                } else {
+                    languageGroup.style.display = 'none';
+                    languageSelect.required = false;
+                }
+            });
+
+            // Form submission
+            document.getElementById('horoscopeForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                generateHoroscope();
+            });
+
+            // Auto-fill coordinates for major Indian cities
+            document.getElementById('birthPlace').addEventListener('change', function() {
+                const place = this.value.toLowerCase();
+                const coordinates = {
+                    'delhi': { lat: 28.6139, lng: 77.2090 },
+                    'mumbai': { lat: 19.0760, lng: 72.8777 },
+                    'kolkata': { lat: 22.5726, lng: 88.3639 },
+                    'chennai': { lat: 13.0827, lng: 80.2707 },
+                    'bangalore': { lat: 12.9716, lng: 77.5946 },
+                    'hyderabad': { lat: 17.3850, lng: 78.4867 },
+                    'pune': { lat: 18.5204, lng: 73.8567 },
+                    'ahmedabad': { lat: 23.0225, lng: 72.5714 },
+                    'jaipur': { lat: 26.9124, lng: 75.7873 },
+                    'surat': { lat: 21.1702, lng: 72.8311 }
+                };
+
+                Object.keys(coordinates).forEach(city => {
+                    if (place.includes(city)) {
+                        document.getElementById('latitude').value = coordinates[city].lat;
+                        document.getElementById('longitude').value = coordinates[city].lng;
+                        document.getElementById('timezone').value = '5.5'; // IST
+                    }
+                });
+            });
+        }
+
+        async function generateHoroscope() {
+            const formData = new FormData(document.getElementById('horoscopeForm'));
+            const data = Object.fromEntries(formData.entries());
+
+            // Validate required fields
+            if (!validateForm(data)) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('generateBtn').disabled = true;
+
+            // Simulate calculation time
+            setTimeout(() => {
+                try {
+                    horoscopeData = calculateHoroscope(data);
+                    displayHoroscope(horoscopeData);
+
+                    // Hide loading and show results
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('results').style.display = 'block';
+                    document.getElementById('generateBtn').disabled = false;
+
+                    // Scroll to results
+                    document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+                } catch (error) {
+                    console.error('Error generating horoscope:', error);
+                    alert('Error generating horoscope. Please check your inputs and try again.');
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('generateBtn').disabled = false;
+                }
+            }, 4000);
+        }
+
+        function validateForm(data) {
+            const required = ['fullName', 'gender', 'birthDate', 'birthTime', 'birthPlace', 'latitude', 'longitude', 'timezone', 'chartStyle', 'language'];
+            return required.every(field => data[field] && data[field].trim() !== '');
+        }
+
+        function calculateHoroscope(data) {
+            // Parse birth data
+            const birthDate = new Date(data.birthDate + 'T' + data.birthTime);
+            const latitude = parseFloat(data.latitude);
+            const longitude = parseFloat(data.longitude);
+            const timezone = parseFloat(data.timezone);
+
+            // Adjust for timezone
+            const utcTime = new Date(birthDate.getTime() - (timezone * 60 * 60 * 1000));
+
+            // Calculate Julian Day Number
+            const jd = getJulianDayNumber(utcTime);
+
+            // Calculate planetary positions (simplified)
+            const planetaryPositions = calculatePlanetaryPositions(jd, latitude, longitude);
+
+            // Calculate houses
+            const houses = calculateHouses(jd, latitude, longitude);
+
+            // Determine ascendant, moon sign, sun sign
+            const ascendant = houses[1];
+            const moonSign = Math.floor(planetaryPositions.moon / 30) + 1;
+            const sunSign = Math.floor(planetaryPositions.sun / 30) + 1;
+
+            // Calculate Nakshatra
+            const moonNakshatraDegree = planetaryPositions.moon % 360;
+            const nakshatraIndex = Math.floor((moonNakshatraDegree * 27) / 360);
+            const nakshatra = nakshatras[nakshatraIndex];
+            const pada = Math.floor(((moonNakshatraDegree * 27) % 360) / 90) + 1;
+
+            // Generate divisional charts
+            const divisionalChartsData = generateDivisionalCharts(planetaryPositions, data.includeDivisional);
+
+            return {
+                personalInfo: data,
+                birthDetails: {
+                    date: birthDate,
+                    jd: jd,
+                    latitude: latitude,
+                    longitude: longitude,
+                    timezone: timezone
+                },
+                planetaryPositions: planetaryPositions,
+                houses: houses,
+                ascendant: ascendant,
+                moonSign: moonSign,
+                sunSign: sunSign,
+                nakshatra: nakshatra,
+                pada: pada,
+                divisionalCharts: divisionalChartsData,
+                predictions: generatePredictions(planetaryPositions, houses, ascendant, moonSign, sunSign)
+            };
+        }
+
+        function getJulianDayNumber(date) {
+            // Simplified Julian Day calculation
+            const a = Math.floor((14 - (date.getMonth() + 1)) / 12);
+            const y = date.getFullYear() + 4800 - a;
+            const m = (date.getMonth() + 1) + 12 * a - 3;
+
+            let jd = date.getDate() + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+
+            // Add time component
+            const timeOfDay = date.getHours() / 24 + date.getMinutes() / 1440 + date.getSeconds() / 86400;
+            jd += timeOfDay;
+
+            return jd;
+        }
+
+        function calculatePlanetaryPositions(jd, lat, lng) {
+            // Simplified planetary position calculation
+            const T = (jd - 2451545.0) / 36525; // centuries since J2000.0
+
+            const positions = {};
+
+            // Sun (simplified)
+            const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+            positions.sun = (L0 % 360 + 360) % 360;
+
+            // Moon (simplified)
+            const Lm = 218.3164477 + 481267.88123421 * T - 0.0015786 * T * T;
+            positions.moon = (Lm % 360 + 360) % 360;
+
+            // Other planets (simplified positions for demo)
+            positions.mars = (positions.sun + 45 + Math.random() * 60) % 360;
+            positions.mercury = (positions.sun + Math.random() * 30 - 15) % 360;
+            positions.jupiter = (positions.sun + Math.random() * 180) % 360;
+            positions.venus = (positions.sun + Math.random() * 40 - 20) % 360;
+            positions.saturn = (positions.sun + Math.random() * 120) % 360;
+            positions.rahu = (Math.random() * 360) % 360;
+            positions.ketu = (positions.rahu + 180) % 360;
+
+            return positions;
+        }
+
+        function calculateHouses(jd, lat, lng) {
+            // Simplified house calculation
+            const houses = {};
+            const ascendantDegree = (Math.random() * 360) % 360;
+
+            for (let i = 1; i <= 12; i++) {
+                const houseDegree = (ascendantDegree + (i - 1) * 30) % 360;
+                houses[i] = Math.floor(houseDegree / 30) + 1;
+            }
+
+            return houses;
+        }
+
+        function generateDivisionalCharts(planetaryPositions, includeDivisional) {
+            const chartsToGenerate = [];
+
+            switch (includeDivisional) {
+                case 'basic':
+                    chartsToGenerate.push('D1');
+                    break;
+                case 'essential':
+                    chartsToGenerate.push('D1', 'D9');
+                    break;
+                case 'extended':
+                    chartsToGenerate.push('D1', 'D9', 'D10', 'D12');
+                    break;
+                case 'complete':
+                    chartsToGenerate.push('D1', 'D9', 'D10', 'D12', 'D16', 'D20', 'D24', 'D27', 'D30', 'D40', 'D45', 'D60');
+                    break;
+            }
+
+            const divisionalChartsData = {};
+
+            chartsToGenerate.forEach(chartType => {
+                divisionalChartsData[chartType] = calculateDivisionalChart(planetaryPositions, chartType);
+            });
+
+            return divisionalChartsData;
+        }
+
+        function calculateDivisionalChart(planetaryPositions, chartType) {
+            const divisionalPositions = {};
+            const divisor = parseInt(chartType.substring(1));
+
+            Object.keys(planetaryPositions).forEach(planet => {
+                const originalDegree = planetaryPositions[planet];
+                const sign = Math.floor(originalDegree / 30) + 1;
+                const degreeInSign = originalDegree % 30;
+
+                // Simplified divisional calculation
+                let divisionalDegree;
+                if (divisor === 1) {
+                    divisionalDegree = originalDegree;
+                } else {
+                    const portion = Math.floor(degreeInSign / (30 / divisor));
+                    divisionalDegree = ((sign - 1) * divisor + portion) * (360 / (12 * divisor));
+                }
+
+                divisionalPositions[planet] = divisionalDegree % 360;
+            });
+
+            // Calculate houses for this divisional chart
+            const divisionalHouses = {};
+            const ascendantDegree = divisionalPositions.sun || 0; // Simplified
+
+            for (let i = 1; i <= 12; i++) {
+                const houseDegree = (ascendantDegree + (i - 1) * 30) % 360;
+                divisionalHouses[i] = Math.floor(houseDegree / 30) + 1;
+            }
+
+            return {
+                positions: divisionalPositions,
+                houses: divisionalHouses,
+                info: divisionalCharts[chartType]
+            };
+        }
+
+        function displayHoroscope(data) {
+            // Display basic information
+            document.getElementById('ascendant').textContent = zodiacSigns[data.ascendant].name + ' (' + zodiacSigns[data.ascendant].sanskrit + ')';
+            document.getElementById('moonSign').textContent = zodiacSigns[data.moonSign].name + ' (' + zodiacSigns[data.moonSign].sanskrit + ')';
+            document.getElementById('sunSign').textContent = zodiacSigns[data.sunSign].name + ' (' + zodiacSigns[data.sunSign].sanskrit + ')';
+            document.getElementById('nakshatra').textContent = data.nakshatra;
+            document.getElementById('pada').textContent = data.pada;
+
+            // Display all divisional charts
+            displayAllCharts(data.divisionalCharts, data.planetaryPositions, data.houses);
+
+            // Display predictions
+            displayPredictions(data.predictions);
+        }
+
+        function displayAllCharts(divisionalChartsData, originalPlanets, originalHouses) {
+            const chartsContainer = document.getElementById('chartsContainer');
+            chartsContainer.innerHTML = '';
+
+            Object.keys(divisionalChartsData).forEach(chartType => {
+                const chartData = divisionalChartsData[chartType];
+                const chartDiv = document.createElement('div');
+                chartDiv.className = 'chart-container';
+
+                const titleDiv = document.createElement('h4');
+                titleDiv.textContent = chartData.info.name;
+                chartDiv.appendChild(titleDiv);
+
+                const chartGrid = document.createElement('div');
+                chartGrid.className = 'chart-grid';
+
+                // Create chart based on type
+                if (chartType === 'D1') {
+                    // Use original data for D1
+                    createChartGrid(chartGrid, originalPlanets, originalHouses);
+                } else {
+                    // Use divisional data for other charts
+                    createChartGrid(chartGrid, chartData.positions, chartData.houses);
+                }
+
+                chartDiv.appendChild(chartGrid);
+
+                const descriptionDiv = document.createElement('div');
+                descriptionDiv.className = 'chart-description';
+                descriptionDiv.textContent = chartData.info.description;
+                chartDiv.appendChild(descriptionDiv);
+
+                chartsContainer.appendChild(chartDiv);
+            });
+        }
+
+        function createChartGrid(chartGrid, planets, houses) {
+            chartGrid.innerHTML = '';
+
+            // Create chart based on selected style (simplified version)
+            // For this demo, we'll use a simple 12-house grid
+            for (let i = 1; i <= 12; i++) {
+                const houseDiv = document.createElement('div');
+                houseDiv.className = 'chart-house';
+
+                const houseNumber = document.createElement('div');
+                houseNumber.className = 'house-number';
+                houseNumber.textContent = 'H' + i;
+                houseDiv.appendChild(houseNumber);
+
+                const sign = houses[i];
+                const signDiv = document.createElement('div');
+                signDiv.textContent = zodiacSigns[sign].name.substr(0, 3);
+                signDiv.style.fontSize = '9px';
+                signDiv.style.color = '#666';
+                houseDiv.appendChild(signDiv);
+
+                // Add planets in this house
+                Object.keys(planets).forEach(planetKey => {
+                    const planetDegree = planets[planetKey];
+                    const planetSign = Math.floor(planetDegree / 30) + 1;
+
+                    if (planetSign === sign) {
+                        const planetDiv = document.createElement('div');
+                        planetDiv.className = 'planet';
+                        planetDiv.textContent = planetKey.substr(0, 2).toUpperCase();
+                        houseDiv.appendChild(planetDiv);
+                    }
+                });
+
+                chartGrid.appendChild(houseDiv);
+            }
+        }
+
+        function generatePredictions(planets, houses, ascendant, moonSign, sunSign) {
+            const predictions = {};
+
+            predictions.personality = generatePersonalityPrediction(ascendant, sunSign, moonSign);
+            predictions.career = generateCareerPrediction(planets, houses);
+            predictions.health = generateHealthPrediction(planets, houses);
+            predictions.relationships = generateRelationshipPrediction(planets, houses);
+            predictions.finance = generateFinancePrediction(planets, houses);
+            predictions.education = generateEducationPrediction(planets, houses);
+            predictions.family = generateFamilyPrediction(planets, houses);
+            predictions.spiritual = generateSpiritualPrediction(planets, houses);
+
+            return predictions;
+        }
+
+        function generatePersonalityPrediction(ascendant, sunSign, moonSign) {
+            const ascendantTraits = {
+                1: "You are naturally confident, ambitious, and pioneering. You have strong leadership qualities and are not afraid to take initiatives.",
+                2: "You possess a steady, practical nature with a love for beauty and comfort. You are reliable and have a strong sense of values.",
+                3: "You are intellectually curious, communicative, and adaptable. You have a talent for learning and sharing information.",
+                4: "You are emotionally sensitive, nurturing, and intuitive. Family and home are very important to you.",
+                5: "You have a natural charisma, creativity, and leadership abilities. You enjoy being in the spotlight and inspiring others.",
+                6: "You are detail-oriented, analytical, and service-minded. You have a strong desire to help others and improve situations.",
+                7: "You are diplomatic, harmonious, and relationship-focused. You have a natural ability to balance different viewpoints.",
+                8: "You are intense, transformative, and mysterious. You have a deep understanding of life's hidden aspects.",
+                9: "You are philosophical, optimistic, and adventure-loving. You have a natural inclination towards higher learning and travel.",
+                10: "You are disciplined, ambitious, and responsible. You have a strong drive for success and recognition in your career.",
+                11: "You are innovative, humanitarian, and independent. You have a unique perspective and desire to benefit society.",
+                12: "You are compassionate, intuitive, and spiritually inclined. You have a deep connection to the collective unconscious."
+            };
+
+            return {
+                title: "Personality & Character Analysis",
+                content: ascendantTraits[ascendant] + " Your Sun sign (" + zodiacSigns[sunSign].name + ") adds " + getSunTraits(sunSign) + " Your Moon sign (" + zodiacSigns[moonSign].name + ") influences your emotional nature with " + getMoonTraits(moonSign)
+            };
+        }
+
+        function getSunTraits(sunSign) {
+            const traits = {
+                1: "courage, initiative, and leadership qualities to your personality.",
+                2: "stability, determination, and a love for material comforts.",
+                3: "versatility, communication skills, and intellectual curiosity.",
+                4: "emotional depth, nurturing tendencies, and strong family bonds.",
+                5: "creativity, confidence, and a desire for recognition.",
+                6: "analytical thinking, perfectionism, and service orientation.",
+                7: "diplomacy, partnership focus, and artistic sensibilities.",
+                8: "intensity, transformation, and deep psychological insights.",
+                9: "wisdom, optimism, and philosophical outlook.",
+                10: "ambition, discipline, and practical approach to goals.",
+                11: "innovation, independence, and humanitarian concerns.",
+                12: "compassion, spirituality, and intuitive abilities."
+            };
+            return traits[sunSign];
+        }
+
+        function getMoonTraits(moonSign) {
+            const traits = {
+                1: "emotional directness, impulsiveness, and quick reactions.",
+                2: "emotional stability, need for security, and sensual pleasures.",
+                3: "emotional flexibility, need for mental stimulation, and changeable moods.",
+                4: "deep emotional sensitivity, strong maternal instincts, and attachment to past.",
+                5: "emotional drama, need for appreciation, and generous heart.",
+                6: "emotional reserve, analytical emotions, and practical caring.",
+                7: "emotional balance, need for harmony, and cooperative feelings.",
+                8: "emotional intensity, passionate feelings, and transformative experiences.",
+                9: "emotional optimism, need for freedom, and philosophical emotions.",
+                10: "emotional control, practical emotions, and ambitious feelings.",
+                11: "emotional detachment, need for independence, and humanitarian emotions.",
+                12: "emotional sensitivity, intuitive feelings, and compassionate nature."
+            };
+            return traits[moonSign];
+        }
+
+        function generateCareerPrediction(planets, houses) {
+            const careerAdvice = [
+                "Your planetary positions suggest strong potential in leadership roles and entrepreneurial ventures. The divisional charts indicate favorable periods for career advancement.",
+                "You have natural talents that can be channeled into creative or artistic fields. Your Dasamsa chart shows recognition and success in chosen profession.",
+                "Your analytical mind and attention to detail make you suitable for technical or research-based careers. Consider fields involving precision and expertise.",
+                "Your communication skills and people-oriented nature point towards careers in education, counseling, or media. Public relations and marketing may also be suitable.",
+                "Your practical nature and organizational skills suggest success in business or administrative roles. Management positions will bring satisfaction.",
+                "Your innovative thinking and humanitarian values indicate potential in social work or technology sectors. Consider careers that benefit society."
+            ];
+
+            return {
+                title: "Career & Professional Life",
+                content: careerAdvice[Math.floor(Math.random() * careerAdvice.length)] + " Focus on developing your natural talents while being open to learning new skills. The Dasamsa (D10) chart shows significant career opportunities between ages 28-35. Your professional reputation will grow steadily through dedicated effort."
+            };
+        }
+
+        function generateHealthPrediction(planets, houses) {
+            return {
+                title: "Health & Wellness",
+                content: "Your constitution shows good overall health potential, but attention to stress management is essential. The Trimsamsa (D30) chart indicates periods requiring extra care for health. Regular exercise, particularly activities that combine physical and mental discipline like yoga, would be beneficial. Watch for seasonal health fluctuations and maintain a consistent sleep schedule. Digestive health requires attention - favor fresh, home-cooked meals over processed foods. Preventive health measures taken now will ensure long-term vitality."
+            };
+        }
+
+        function generateRelationshipPrediction(planets, houses) {
+            return {
+                title: "Relationships & Marriage",
+                content: "Your planetary positions indicate a strong capacity for meaningful relationships. The Navamsa (D9) chart reveals deep insights about your marriage and partnership potential. You value loyalty and emotional security in partnerships. Marriage prospects look favorable, with potential for a harmonious union that brings both emotional fulfillment and practical stability. Your spouse may be from a different cultural or educational background. Family relationships are important to you, and you may take on a nurturing role within your family circle. Communication and mutual understanding will be key factors in all your relationships."
+            };
+        }
+
+        function generateFinancePrediction(planets, houses) {
+            return {
+                title: "Finance & Wealth",
+                content: "Your financial life shows steady growth potential through disciplined savings and smart investments. Multiple income sources may develop over time, as indicated by various divisional charts. Property investments could be particularly favorable. Avoid impulsive spending and focus on building long-term wealth rather than seeking quick gains. The period after age 30 may bring increased financial stability and opportunities for wealth accumulation. Your practical approach to money management will serve you well throughout life."
+            };
+        }
+
+        function generateEducationPrediction(planets, houses) {
+            return {
+                title: "Education & Learning",
+                content: "You have a natural affinity for learning and may excel in subjects that require both analytical and creative thinking. The Chaturvimsamsa (D24) chart shows strong educational potential. Higher education prospects are favorable, and you may pursue specialized knowledge or professional qualifications. Continuous learning throughout life will be important for your growth. Consider fields that combine practical application with theoretical knowledge. Your educational journey may include studying abroad or learning from diverse cultural perspectives."
+            };
+        }
+
+        function generateFamilyPrediction(planets, houses) {
+            return {
+                title: "Family & Domestic Life",
+                content: "Family plays a central role in your life, and you have strong bonds with parents and siblings. The Dwadasamsa (D12) chart reveals ancestral influences and family karma. Your home environment is likely to be harmonious and comfortable. You may inherit property or assets from family. Relationships with in-laws after marriage are generally positive. You have the potential to be an excellent parent, providing both discipline and emotional support to your children. Family traditions and values are important to you."
+            };
+        }
+
+        function generateSpiritualPrediction(planets, houses) {
+            return {
+                title: "Spiritual Growth & Philosophy",
+                content: "You have a natural inclination towards spiritual matters and philosophy. The Vimsamsa (D20) chart indicates your spiritual path and religious inclinations. Meditation, prayer, or other spiritual practices can bring you peace and clarity. You may be drawn to studying ancient wisdom, yoga, or alternative healing methods. Your spiritual journey will likely deepen with age, and you may become a guide for others seeking spiritual understanding. Pilgrimage or visits to sacred places may be spiritually significant. The Shashtiamsa (D60) chart suggests past life karmic influences that shape your spiritual evolution."
+            };
+        }
+
+        function displayPredictions(predictions) {
+            const predictionsContainer = document.getElementById('predictions');
+            predictionsContainer.innerHTML = '<h3>🔮 Detailed Vedic Predictions</h3>';
+
+            Object.values(predictions).forEach(prediction => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'prediction-section';
+
+                const titleDiv = document.createElement('h4');
+                titleDiv.textContent = prediction.title;
+                sectionDiv.appendChild(titleDiv);
+
+                const contentDiv = document.createElement('p');
+                contentDiv.textContent = prediction.content;
+                sectionDiv.appendChild(contentDiv);
+
+                predictionsContainer.appendChild(sectionDiv);
+            });
+        }
+
+        function downloadPDF() {
+            if (!horoscopeData.personalInfo) {
+                alert('No horoscope data available to download.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Set font
+            doc.setFont('helvetica');
+
+            let yPosition = 20;
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 20;
+            const lineHeight = 7;
+
+            // Title
+            doc.setFontSize(20);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Nakshatra Vidhi - Complete Vedic Report', pageWidth / 2, yPosition, { align: 'center' });
+            yPosition += 15;
+
+            // Decorative line
+            doc.setDrawColor(102, 126, 234);
+            doc.setLineWidth(0.5);
+            doc.line(margin, yPosition, pageWidth - margin, yPosition);
+            yPosition += 10;
+
+            // Personal Information
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('Personal Information', margin, yPosition);
+            yPosition += 10;
+
+            doc.setFontSize(12);
+            const personalInfo = horoscopeData.personalInfo;
+            doc.text(`Name: ${personalInfo.fullName}`, margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`Gender: ${personalInfo.gender.charAt(0).toUpperCase() + personalInfo.gender.slice(1)}`, margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`Date of Birth: ${personalInfo.birthDate}`, margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`Time of Birth: ${personalInfo.birthTime}`, margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`Place of Birth: ${personalInfo.birthPlace}`, margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`Chart Style: ${personalInfo.chartStyle} Indian`, margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`Language: ${personalInfo.language}`, margin, yPosition);
+            yPosition += 15;
+
+            // Astrological Summary
+            doc.setFontSize(16);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Astrological Summary', margin, yPosition);
+            yPosition += 10;
+
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Ascendant (Lagna): ${zodiacSigns[horoscopeData.ascendant].name} (${zodiacSigns[horoscopeData.ascendant].sanskrit})`, margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`Moon Sign (Rasi): ${zodiacSigns[horoscopeData.moonSign].name} (${zodiacSigns[horoscopeData.moonSign].sanskrit})`, margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`Sun Sign: ${zodiacSigns[horoscopeData.sunSign].name} (${zodiacSigns[horoscopeData.sunSign].sanskrit})`, margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`Nakshatra: ${horoscopeData.nakshatra}`, margin, yPosition);
+            yPosition += lineHeight;
+            doc.text(`Pada: ${horoscopeData.pada}`, margin, yPosition);
+            yPosition += 15;
+
+            // Divisional Charts Information
+            doc.setFontSize(16);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Divisional Charts Analysis', margin, yPosition);
+            yPosition += 10;
+
+            doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
+            Object.keys(horoscopeData.divisionalCharts).forEach(chartType => {
+                const chartInfo = horoscopeData.divisionalCharts[chartType].info;
+                doc.text(`${chartInfo.name}: ${chartInfo.description}`, margin, yPosition);
+                yPosition += 5;
+            });
+            yPosition += 10;
+
+            // Predictions
+            doc.setFontSize(16);
+            doc.setTextColor(102, 126, 234);
+            doc.text('Detailed Predictions', margin, yPosition);
+            yPosition += 10;
+
+            Object.values(horoscopeData.predictions).forEach(prediction => {
+                // Check if we need a new page
+                if (yPosition > 250) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+
+                doc.setFontSize(14);
+                doc.setTextColor(102, 126, 234);
+                doc.text(prediction.title, margin, yPosition);
+                yPosition += 8;
+
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+
+                // Split long text into lines
+                const splitText = doc.splitTextToSize(prediction.content, pageWidth - 2 * margin);
+                doc.text(splitText, margin, yPosition);
+                yPosition += splitText.length * 5 + 5;
+            });
+
+            // Footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(128, 128, 128);
+                doc.text(`Generated by Nakshatra Vidhi on ${new Date().toLocaleDateString()} | Page ${i} of ${pageCount}`, margin, doc.internal.pageSize.getHeight() - 10);
+            }
+
+            // Save the PDF
+            const fileName = `Nakshatra_Vidhi_${personalInfo.fullName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(fileName);
+        }
+
+        function generateNewHoroscope() {
+            document.getElementById('horoscopeForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('languageGroup').style.display = 'none';
+            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+            horoscopeData = {};
+        }
+    </script>
+</body>
+</html>
