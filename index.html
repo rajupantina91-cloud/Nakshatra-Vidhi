@@ -957,8 +957,11 @@
             // Calculate Julian Day Number
             const jd = getJulianDayNumber(utcTime);
 
-            // Calculate planetary positions (simplified)
-            const planetaryPositions = calculatePlanetaryPositions(jd, latitude, longitude, ayanamsaData.value);
+            // OLD (incorrect) call — missing ayanamsaData.value:
+// const planetaryPositions = calculatePlanetaryPositions(jd, latitude, longitude);
+
+// UPDATED call — include ayanamsaData.value:
+const planetaryPositions = calculatePlanetaryPositions(jd, latitude, longitude, ayanamsaData.value);
 
             // Calculate houses
             const houses = calculateHouses(jd, latitude, longitude);
