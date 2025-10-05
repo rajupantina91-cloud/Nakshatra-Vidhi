@@ -19,9 +19,7 @@ A comprehensive, self-sufficient HTML application for generating detailed Hindu/
 
 ## 🚀 Live Demo
 
-**[Launch Nakshatra Vidhi →](https://yourusername.github.io/nakshatra-vidhi)**
-
-*Replace 'yourusername' with your actual GitHub username*
+**[Launch Nakshatra Vidhi →](https://rajupantina91-cloud.github.io/nakshatra-vidhi/)**
 
 ## 📊 Divisional Charts Supported
 
@@ -114,7 +112,7 @@ The application honors the rich diversity of Hindu astrology across different re
 
 ## 📱 Screenshots
 
-*Coming Soon - Add screenshots of your application interface*
+*Coming Soon*
 
 ## 🤝 Contributing
 
@@ -157,9 +155,7 @@ If you encounter any issues or have questions:
 - Chrome 60+, Firefox 55+, Safari 12+, Edge 79+
 - JavaScript enabled
 - Local storage available (for temporary calculations)
-
 ---
-
 ⭐ **Star this repository if you find it helpful!**
 
 Made with ❤️ for the global Vedic astrology community
